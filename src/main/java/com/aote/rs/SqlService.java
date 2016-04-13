@@ -3,11 +3,15 @@ package com.aote.rs;
 import java.io.RandomAccessFile;
 import java.util.Set;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,13 +30,58 @@ import com.aote.rs.util.SqlHelper;
 public class SqlService {
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	static Logger log = Logger.getLogger(SqlService.class);
+
+	@POST 
+	@Path("{name}/n")
+	public JSONObject txgetTotalCnt(@PathParam("name") String name, String str) throws JSONException 
+	{
+		try {
+			JSONObject jo = new JSONObject();
+
+			// 解析传递过来的对象属性
+			String sql = getSql(name);
+			
+			sql = "$" + sql;
+			
+			// 拿到json对象参数
+			JSONObject param = null;
+			if(str != null && !str.isEmpty()) {
+				log.debug(str);				
+				param = new JSONObject(str);
+				log.debug(param.get("condition"));
+			}
+			sql = getExecSql(sql, param);
+			
+			sql = filterOutOrderBy(sql);
+			
+			Session session = sessionFactory.getCurrentSession();
+			JSONArray array = SqlHelper.query(session, sql);
+			jo.put("n", array.getJSONObject(0).getInt("n"));
+			return jo;
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Error e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	private String filterOutOrderBy(String sql) {
+		int idx = sql.toLowerCase().lastIndexOf(" order ");
+		if(idx != -1)
+			sql = "select count(*) n, '1' placeholder from ( " + sql.substring(0, idx) + ") ___t___";
+		return sql;
+	}
 
 	/**
 	 * 执行sql,对sql中的参数进行替换
 	 */
 	@POST
-	@Path("{name}")
-	public JSONArray txExecute(@PathParam("name") String name, String str) {
+	@Path("/fallthrough/{name}")
+	public JSONArray txFallThroughExecute(@PathParam("name") String name, String str) {
 		try {
 			// 解析传递过来的对象属性
 			String sql = getSql(name);
@@ -41,10 +90,41 @@ public class SqlService {
 			JSONObject param = null;
 			if(str != null && !str.isEmpty()) {
 				param = new JSONObject(str);
+				log.debug(str);
 			}
 			sql = getExecSql(sql, param);
 			Session session = sessionFactory.getCurrentSession();
 			JSONArray array = SqlHelper.query(session, sql);
+			return array;
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Error e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * 执行sql,对sql中的参数进行替换
+	 */
+	@POST
+	@Path("{name}")
+	public JSONArray txExecute(@PathParam("name") String name, @QueryParam("pageNo") int pageNo, @QueryParam("pageSize") int pageSize, String str) {
+		try {
+			// 解析传递过来的对象属性
+			String sql = getSql(name);
+			sql = "$" + sql;
+			// 拿到json对象参数
+			JSONObject param = null;
+			if(str != null && !str.isEmpty()) {
+				log.debug(str);				
+				param = new JSONObject(str);
+				log.debug(param.get("condition"));
+			}
+			sql = getExecSql(sql, param);
+			Session session = sessionFactory.getCurrentSession();
+			JSONArray array = SqlHelper.query(session, sql, pageNo-1, pageSize);
 			return array;
 		} catch (RuntimeException e) {
 			throw e;
