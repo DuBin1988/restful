@@ -3,11 +3,15 @@ package com.aote.rs;
 import java.io.RandomAccessFile;
 import java.util.Set;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,7 +23,7 @@ import com.af.expression.Program;
 import com.aote.rs.util.SqlHelper;
 
 /**
- * Ìá¹©sql²éÑ¯·şÎñ
+ * æä¾›sqlæŸ¥è¯¢æœåŠ¡
  */
 @Path("sql")
 @Component
@@ -27,20 +31,66 @@ public class SqlService {
 	@Autowired
 	private SessionFactory sessionFactory;
 
+	static Logger log = Logger.getLogger(SqlService.class);
+
+	@POST
+	@Path("{name}/n")
+	public JSONObject txgetTotalCnt(@PathParam("name") String name, String str) throws JSONException
+	{
+		try {
+			JSONObject jo = new JSONObject();
+
+			// è§£æä¼ é€’è¿‡æ¥çš„å¯¹è±¡å±æ€§
+			String sql = getSql(name);
+
+			sql = "$" + sql;
+
+			// æ‹¿åˆ°jsonå¯¹è±¡å‚æ•°
+			JSONObject param = null;
+			if(str != null && !str.isEmpty()) {
+				log.debug(str);
+				param = new JSONObject(str);
+			}
+			sql = getExecSql(sql, param);
+
+			sql = filterOutOrderBy(sql);
+
+			Session session = sessionFactory.getCurrentSession();
+			JSONArray array = SqlHelper.query(session, sql);
+			log.debug(array.toString());
+			jo.put("n", array.getJSONObject(0).getInt("n"));
+			return jo;
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Error e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private String filterOutOrderBy(String sql) {
+		int idx = sql.toLowerCase().lastIndexOf("order by");
+		if(idx != -1)
+			sql = "select count(*) n, '1' placeholder from ( " + sql.substring(0, idx) + ") ___t___";
+		return sql;
+	}
+
 	/**
-	 * Ö´ĞĞsql,¶ÔsqlÖĞµÄ²ÎÊı½øĞĞÌæ»»
+	 * æ‰§è¡Œsql,å¯¹sqlä¸­çš„å‚æ•°è¿›è¡Œæ›¿æ¢
 	 */
 	@POST
-	@Path("{name}")
-	public JSONArray txExecute(@PathParam("name") String name, String str) {
+	@Path("/fallthrough/{name}")
+	public JSONArray txFallThroughExecute(@PathParam("name") String name, String str) {
 		try {
-			// ½âÎö´«µİ¹ıÀ´µÄ¶ÔÏóÊôĞÔ
+			// è§£æä¼ é€’è¿‡æ¥çš„å¯¹è±¡å±æ€§
 			String sql = getSql(name);
 			sql = "$" + sql;
-			// ÄÃµ½json¶ÔÏó²ÎÊı
+			// æ‹¿åˆ°jsonå¯¹è±¡å‚æ•°
 			JSONObject param = null;
 			if(str != null && !str.isEmpty()) {
 				param = new JSONObject(str);
+				log.debug(str);
 			}
 			sql = getExecSql(sql, param);
 			Session session = sessionFactory.getCurrentSession();
@@ -55,7 +105,51 @@ public class SqlService {
 		}
 	}
 
-	// ÄÃµ½sql×Ö·û´®
+	/**
+	 * æ‰§è¡Œsql,å¯¹sqlä¸­çš„å‚æ•°è¿›è¡Œæ›¿æ¢
+	 * pageNo - é¡µå·ï¼Œé»˜è®¤ä¸º1
+	 * pageSize - æ¯é¡µä¸ªæ•°ï¼Œé»˜è®¤ä¸º1000
+	 */
+	@POST
+	@Path("{name}")
+	public JSONArray txExecute(@PathParam("name") String name, @QueryParam("pageNo") int pageNo, @QueryParam("pageSize") int pageSize, String str) {
+		try {
+
+			// pageNoå°äº0ï¼Œ çº æ­£æˆ1
+			if (pageNo <= 0) {
+				pageNo = 1;
+			}
+
+			// pageSizeå°äº0ï¼Œçº æ­£æˆ1
+			if (pageSize < 1 || pageSize > 1000) {
+				pageSize = 1000;
+			}
+
+			// è§£æä¼ é€’è¿‡æ¥çš„å¯¹è±¡å±æ€§
+			String sql = getSql(name);
+			sql = "$" + sql;
+			// æ‹¿åˆ°jsonå¯¹è±¡å‚æ•°
+			JSONObject param = null;
+			if(str != null && !str.isEmpty()) {
+				log.debug(str);
+				param = new JSONObject(str);
+				log.debug(param.toString());
+			}
+			sql = getExecSql(sql, param);
+			Session session = sessionFactory.getCurrentSession();
+			JSONArray array = SqlHelper.query(session, sql, pageNo-1, pageSize);
+			log.debug(array.toString());
+			return array;
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Error e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	// æ‹¿åˆ°sqlå­—ç¬¦ä¸²
 	private String getSql(String str) {
 		String sql = null;
 		try {
@@ -73,36 +167,12 @@ public class SqlService {
 		return sql;
 	}
 
-	// °Ñ×Ö·û´®×ª»»³É¿ÉÖ´ĞĞsql
+	// æŠŠå­—ç¬¦ä¸²è½¬æ¢æˆå¯æ‰§è¡Œsql
 	private String getExecSql(String sql, JSONObject params) {
 		Program prog = new Program(sql);
-		// ½âÎö
-		Delegate d = prog.CommaExp().Compile();
-		// getParamNames·µ»ØËùÓĞ²ÎÊıÃû£¬°ÑÕÒµ½µÄ¶ÔÏóÓÃputParam·Å»Ø
-		Set<String> objectNames = d.objectNames.keySet();
-		for (String name : objectNames) {
-			// ¸ù¾İnameÕÒµ½¶ÔÏó£¬Ğè×Ô¼º±àĞ´
-			Object obj = getVarValue(name, params);
-			// °Ñ¶ÔÏó·Å»ØobjectNames
-			d.objectNames.put(name, obj);
-		}
+		// è§£æ
+		Delegate d = prog.parse();
 		Object result = d.invoke();
 		return result.toString();
-	}
-
-	// ¸ù¾İ±äÁ¿ÃûÈ¡±äÁ¿Öµ
-	private Object getVarValue(String name, JSONObject params) {
-		try {
-			// Èç¹ûÊÇthis£¬·µ»ØÂß¼­·şÎñ×ÔÉí
-			if (name.equals("this")) {
-				return this;
-			}
-			if (params != null && params.has(name)) {
-				return params.get(name);
-			}
-			return null;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 }

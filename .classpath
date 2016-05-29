@@ -15,6 +15,5 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/work/eclipse/newsellinggas/src/main/webapp/WEB-INF/lib/aofeng.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

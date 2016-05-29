@@ -1,0 +1,11 @@
+// 把对象数据存储到t_taskdispatch中
+this.save
+
+// 更新t_task里的内容为分派时的值
+this.sql($
+update t_task set
+  actor={actor},
+  way={way},
+  musttime={musttime}
+where id={taskid}
+$)

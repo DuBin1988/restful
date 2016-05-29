@@ -23,6 +23,10 @@
 		
 		<!-- 项目 -->
         <mapping resource="oa/项目.hbm.xml"/>
+		<!-- 任务 -->
+        <mapping resource="oa/任务.hbm.xml"/>
+		<!-- 任务分派 -->
+        <mapping resource="oa/任务分派.hbm.xml"/>
 		
 	</session-factory>
   

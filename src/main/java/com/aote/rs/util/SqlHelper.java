@@ -1,7 +1,7 @@
 package com.aote.rs.util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +22,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 public class SqlHelper {
-	public static JSONArray query(Session session,String sql) {
+	public static JSONArray query(Session session, String sql) {
 		JSONArray array = new JSONArray();
 		HibernateSQLCall sqlCall = new HibernateSQLCall(sql, 0, 9999999);
 		sqlCall.transformer = Transformers.ALIAS_TO_ENTITY_MAP;
@@ -35,6 +35,19 @@ public class SqlHelper {
 		return array;	
 	}
 
+	public static JSONArray query(Session session, String sql, int pageNo, int pageSize) {
+		JSONArray array = new JSONArray();
+		HibernateSQLCall sqlCall = new HibernateSQLCall(sql, pageNo, pageSize);
+		sqlCall.transformer = Transformers.ALIAS_TO_ENTITY_MAP;
+		List<Map<String, Object>> list =(List<Map<String, Object>>)sqlCall.doInHibernate(session);
+		for (Map<String, Object> map : list) {
+			JSONObject json = (JSONObject) new JsonTransfer()
+					.MapToJson(map);
+			array.put(json);
+		}
+		return array;	
+	}
+	
 	// 执行sql分页查询，结果集形式可以设置
 	static class HibernateSQLCall implements HibernateCallback {
 		String sql;
@@ -94,10 +107,10 @@ public class SqlHelper {
 					if (key.equals("$type$")) {
 						json.put("EntityType", value);
 					} else if (value instanceof Date) {
-						Date d1 = (Date) value;
-						Calendar c = Calendar.getInstance();
-						long time = d1.getTime() + c.get(Calendar.ZONE_OFFSET);
-						json.put(key, time);
+						Date date = (Date) value;
+						SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");  
+						String str=sdf.format(date);
+						json.put(key, str);
 					} else if (value instanceof MapProxy) {
 						// MapProxy没有加载，不管
 					} else {

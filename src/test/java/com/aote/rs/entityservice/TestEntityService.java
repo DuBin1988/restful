@@ -2,6 +2,7 @@ package com.aote.rs.entityservice;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import junit.framework.TestCase;
@@ -15,23 +16,23 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import com.aote.rs.util.Util;
+
 public class TestEntityService extends TestCase {
 	public void testOne(){
 		try {
-			String path="http://127.0.0.1:8080/rs/entity/"+ URLEncoder.encode("t_project").replace("+", "%20");
-			// ¥¥Ω®POSTMethod  
-			HttpPost postMethod =new HttpPost(path);/*Ω®¡¢HTTP Post¡¨œﬂ*/
-			StringEntity se = new StringEntity("{name:'≤‚ ‘2∫≈'}","UTF-8");
+			String path="http://127.0.0.1:8081/rs/entity/"+ URLEncoder.encode("t_project").replace("+", "%20");
+			// ÔøΩÔøΩÔøΩÔøΩPOSTMethod
+			HttpPost postMethod =new HttpPost(path);/*ÔøΩÔøΩÔøΩÔøΩHTTP PostÔøΩÔøΩÔøΩÔøΩ*/
+			StringEntity se = new StringEntity("{name 'ÊµãËØï2Êàê'}", "UTF-8");
 			postMethod.setEntity(se);
-			// ÷¥––POSTMethod
+			// ÷¥ÔøΩÔøΩPOSTMethod
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpResponse response = httpClient.execute(postMethod);
+			String actual = EntityUtils.toString(response.getEntity(), "UTF8");
+			System.out.println(actual);
 			int code = response.getStatusLine().getStatusCode();
 			assertEquals(200, code);
-			// »Áπ˚≥…π¶
-			if (code == 200) {
-				String actual = EntityUtils.toString(response.getEntity(), "UTF8");
-			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {

@@ -17,18 +17,22 @@ import org.apache.http.util.EntityUtils;
 
 public class TestSqlService extends TestCase {
 	public void testOne(){
+		sql("project.sql");
+	}
+	
+	private void sql(String name) {
 		try {
-			String path="http://127.0.0.1:8080/rs/sql/"+ URLEncoder.encode("test.sql").replace("+", "%20");
-			// 创建POSTMethod  
-			HttpPost postMethod =new HttpPost(path);/*建立HTTP Post连线*/
+			String path="http://localhost:8081/rs/sql/" + URLEncoder.encode(name).replace("+", "%20") + "/n";
+			// 鍒涘缓POSTMethod
+			HttpPost postMethod =new HttpPost(path);/*寤虹珛HTTP Post杩炵嚎*/
 			StringEntity se = new StringEntity("","UTF-8");
 			postMethod.setEntity(se);
-			// 执行POSTMethod
+			// 鎵цPOSTMethod
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpResponse response = httpClient.execute(postMethod);
 			int code = response.getStatusLine().getStatusCode();
 			assertEquals(200, code);
-			// 如果成功
+			// 濡傛灉鎴愬姛
 			if (code == 200) {
 				String actual = EntityUtils.toString(response.getEntity(), "UTF8");
 			}
