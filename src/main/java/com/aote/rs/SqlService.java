@@ -30,34 +30,34 @@ import com.aote.rs.util.SqlHelper;
 public class SqlService {
 	@Autowired
 	private SessionFactory sessionFactory;
-
+	
 	static Logger log = Logger.getLogger(SqlService.class);
 
-	@POST
+	@POST 
 	@Path("{name}/n")
-	public JSONObject txgetTotalCnt(@PathParam("name") String name, String str) throws JSONException
+	public JSONObject txgetTotalCnt(@PathParam("name") String name, String str) throws JSONException 
 	{
 		try {
 			JSONObject jo = new JSONObject();
 
-			// 解析传递过来的对象属性
+			// �������ݹ����Ķ�������
 			String sql = getSql(name);
-
+			
 			sql = "$" + sql;
-
-			// 拿到json对象参数
+			
+			// �õ�json�������
 			JSONObject param = null;
 			if(str != null && !str.isEmpty()) {
-				log.debug(str);
+				log.debug(str);				
 				param = new JSONObject(str);
+				log.debug(param.get("condition"));
 			}
 			sql = getExecSql(sql, param);
-
+			
 			sql = filterOutOrderBy(sql);
-
+			
 			Session session = sessionFactory.getCurrentSession();
 			JSONArray array = SqlHelper.query(session, sql);
-			log.debug(array.toString());
 			jo.put("n", array.getJSONObject(0).getInt("n"));
 			return jo;
 		} catch (RuntimeException e) {
@@ -68,9 +68,9 @@ public class SqlService {
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 	private String filterOutOrderBy(String sql) {
-		int idx = sql.toLowerCase().lastIndexOf("order by");
+		int idx = sql.toLowerCase().lastIndexOf(" order ");
 		if(idx != -1)
 			sql = "select count(*) n, '1' placeholder from ( " + sql.substring(0, idx) + ") ___t___";
 		return sql;
@@ -114,7 +114,6 @@ public class SqlService {
 	@Path("{name}")
 	public JSONArray txExecute(@PathParam("name") String name, @QueryParam("pageNo") int pageNo, @QueryParam("pageSize") int pageSize, String str) {
 		try {
-
 			// pageNo小于0， 纠正成1
 			if (pageNo <= 0) {
 				pageNo = 1;

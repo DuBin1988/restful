@@ -48,7 +48,6 @@ public class SqlHelper {
 		return array;	
 	}
 	
-	// ִ��sql��ҳ��ѯ���������ʽ��������
 	static class HibernateSQLCall implements HibernateCallback {
 		String sql;
 		int page;
