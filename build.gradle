@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
 	compile(
-		"org.hibernate:hibernate-core:5.1.0.Final",
+		"org.hibernate:hibernate-entitymanager:5.1.0.Final",
 		"org.springframework:spring-context:4.2.5.RELEASE",
 		"org.springframework:spring-orm:4.2.5.RELEASE",
 		"org.glassfish.jersey.containers:jersey-container-servlet:2.22.2",
