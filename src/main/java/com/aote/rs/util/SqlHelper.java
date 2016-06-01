@@ -14,8 +14,8 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.collection.PersistentList;
-import org.hibernate.collection.PersistentSet;
+import org.hibernate.collection.internal.PersistentList;
+import org.hibernate.collection.internal.PersistentSet;
 import org.hibernate.proxy.map.MapProxy;
 import org.hibernate.transform.ResultTransformer;
 import org.hibernate.transform.Transformers;
@@ -48,12 +48,12 @@ public class SqlHelper {
 		return array;	
 	}
 	
-	// Ö´ÐÐsql·ÖÒ³²éÑ¯£¬½á¹û¼¯ÐÎÊ½¿ÉÒÔÉèÖÃ
+	// Ö´ï¿½ï¿½sqlï¿½ï¿½Ò³ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	static class HibernateSQLCall implements HibernateCallback {
 		String sql;
 		int page;
 		int rows;
-		// ²éÑ¯½á¹û×ª»»Æ÷£¬¿ÉÒÔ×ª»»³ÉMapµÈ¡£
+		// ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Mapï¿½È¡ï¿½
 		public ResultTransformer transformer = null;
 
 		public HibernateSQLCall(String sql, int page, int rows) {
@@ -64,7 +64,7 @@ public class SqlHelper {
 
 		public Object doInHibernate(Session session) {
 			Query q = session.createSQLQuery(sql);
-			// ÓÐ×ª»»Æ÷£¬ÉèÖÃ×ª»»Æ÷
+			// ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½
 			if (transformer != null) {
 				q.setResultTransformer(transformer);
 			}
@@ -74,14 +74,14 @@ public class SqlHelper {
 		}
 	}
 	
-	// ×ª»»Æ÷£¬ÔÚ×ª»»ÆÚ¼ä»á¼ì²é¶ÔÏóÊÇ·ñÒÑ¾­×ª»»¹ý£¬±ÜÃâÖØÐÂ×ª»»£¬²úÉúËÀÑ­»·
+	// ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½
 	static class JsonTransfer {
-		// ±£´æÒÑ¾­×ª»»¹ýµÄ¶ÔÏó
+		// ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½ï¿½ï¿½
 		private List<Map<String, Object>> transed = new ArrayList<Map<String, Object>>();
 
-		// °Ñµ¥¸ömap×ª»»³ÉJSON¶ÔÏó
+		// ï¿½Ñµï¿½ï¿½ï¿½map×ªï¿½ï¿½ï¿½ï¿½JSONï¿½ï¿½ï¿½ï¿½
 		public Object MapToJson(Map<String, Object> map) {
-			// ×ª»»¹ý£¬·µ»Ø¿Õ¶ÔÏó
+			// ×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿Õ¶ï¿½ï¿½ï¿½
 			if (contains(map))
 				return JSONObject.NULL;
 			transed.add(map);
@@ -90,7 +90,7 @@ public class SqlHelper {
 				try {
 					String key = entry.getKey();
 					Object value = entry.getValue();
-					// ¿ÕÖµ×ª»»³ÉJSONµÄ¿Õ¶ÔÏó
+					// ï¿½ï¿½Öµ×ªï¿½ï¿½ï¿½ï¿½JSONï¿½Ä¿Õ¶ï¿½ï¿½ï¿½
 					if (value == null) {
 						value = JSONObject.NULL;
 					} else if (value instanceof HashMap) {
@@ -103,7 +103,7 @@ public class SqlHelper {
 						 PersistentList set = (PersistentList) value;
 						value = ToJson(set);
 					}
-					// Èç¹ûÊÇ$type$£¬±íÊ¾ÊµÌåÀàÐÍ£¬×ª»»³ÉEntityType
+					// ï¿½ï¿½ï¿½ï¿½ï¿½$type$ï¿½ï¿½ï¿½ï¿½Ê¾Êµï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½×ªï¿½ï¿½ï¿½ï¿½EntityType
 					if (key.equals("$type$")) {
 						json.put("EntityType", value);
 					} else if (value instanceof Date) {
@@ -112,7 +112,7 @@ public class SqlHelper {
 						String str=sdf.format(date);
 						json.put(key, str);
 					} else if (value instanceof MapProxy) {
-						// MapProxyÃ»ÓÐ¼ÓÔØ£¬²»¹Ü
+						// MapProxyÃ»ï¿½Ð¼ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½ï¿½
 					} else {
 						json.put(key, value);
 					}
@@ -123,9 +123,9 @@ public class SqlHelper {
 			return json;
 		}
 
-		// °Ñ¼¯ºÏ×ª»»³ÉJsonÊý×é
+		// ï¿½Ñ¼ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Jsonï¿½ï¿½ï¿½ï¿½
 		public Object ToJson(PersistentSet set) {
-			// Ã»¼ÓÔØµÄ¼¯ºÏµ±×ö¿Õ
+			// Ã»ï¿½ï¿½ï¿½ØµÄ¼ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½
 			if (!set.wasInitialized()) {
 				return JSONObject.NULL;
 			}
@@ -138,9 +138,9 @@ public class SqlHelper {
 			return array;
 		}
 
-		// °ÑÓÐÐòÁÐ±í×ª»»³ÉJsonÊý×é
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½×ªï¿½ï¿½ï¿½ï¿½Jsonï¿½ï¿½ï¿½ï¿½
 		private Object ToJson(PersistentList list) {
-			// Ã»¼ÓÔØµÄ¼¯ºÏµ±×ö¿Õ
+			// Ã»ï¿½ï¿½ï¿½ØµÄ¼ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½
 			if (!list.wasInitialized()) {
 				return JSONObject.NULL;
 			}
@@ -155,7 +155,7 @@ public class SqlHelper {
 			return array;
 		}
 		
-		// ÅÐ¶ÏÒÑ¾­×ª»»¹ýµÄÄÚÈÝÀïÊÇ·ñ°üº¬¸ø¶¨¶ÔÏó
+		// ï¿½Ð¶ï¿½ï¿½Ñ¾ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		public boolean contains(Map<String, Object> obj) {
 			for (Map<String, Object> map : this.transed) {
 				if (obj == map) {

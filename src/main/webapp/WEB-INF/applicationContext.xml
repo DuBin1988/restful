@@ -10,7 +10,7 @@
        	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
 	<context:annotation-config />
-	<context:component-scan base-package="com.aote.rs" />   
+	<context:component-scan base-package="com.aote" />   
 	
 	<tx:advice id="txAdvice" transaction-manager="txManager">
 		<tx:attributes>
