@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,19 +19,37 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
+/**
+ * 
+ * 组织机构实体
+ *
+ * @author  LGY
+ * @version 1.0
+ * @since   2016-06-02
+ *
+ */
 @Entity
 @Table(name="t_orgnization")
-public class Orgnization implements Serializable {
+public class Organization implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * 代理主键
+	 */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;	
     
+    /**
+     * 版本号
+     */
     @Version
     public Long version;
     
+    /**
+     * 组织名称
+     */
     @NotNull
     public String name;
 
@@ -42,23 +59,34 @@ public class Orgnization implements Serializable {
                  message="{invalid.email}")
     public String email;
 
+    /**
+     * 电话
+     */
     @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
              message="{invalid.phonenumber}")
-    public String mobilePhone;
+    public String mobilephone;
     
-    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
-             message="{invalid.phonenumber}")
-    public String homePhone;
-    
+    /**
+     * 生日
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @Past
     public Date birthday;   
     
-    public BigDecimal salary;
+    /**
+     * 资金
+     */
+    public BigDecimal captial;
     
+    /**
+     * 父组织
+     */
     @ManyToOne
-    public Orgnization parent;
+    public Organization parent;
     
+    /**
+     * 子组织
+     */
     @OneToMany(cascade=CascadeType.ALL, mappedBy="parent")    
-    public List<Orgnization> children;
+    public List<Organization> branches;
 }

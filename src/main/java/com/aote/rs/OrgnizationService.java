@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.aote.entity.Orgnization;
+import com.aote.entity.Organization;
 
 @Path("org")
 @Component
@@ -26,28 +26,28 @@ public class OrgnizationService {
 	
 	@GET
 	public String insertOrgs() {
-		Orgnization parent = new Orgnization();
+		Organization parent = new Organization();
 		parent.name = "123456";
-		parent.salary = new BigDecimal(5999);
+		parent.captial = new BigDecimal(5999);
 		parent.birthday = new Date();
-		parent.children = new ArrayList<Orgnization>();
+		parent.branches = new ArrayList<Organization>();
 
-		Orgnization org1 = new Orgnization();
+		Organization org1 = new Organization();
 		org1.name = "123456";
-		org1.salary = new BigDecimal(5999);
+		org1.captial = new BigDecimal(5999);
 		org1.birthday = new Date();
-		org1.email ="wrongemail";
+		org1.email ="45758012@qq.com";
 		
 		org1.parent = parent;
-		parent.children.add(org1);
+		parent.branches.add(org1);
 		
-		Orgnization org2 = new Orgnization();
+		Organization org2 = new Organization();
 		org2.name = "123456";
-		org2.salary = new BigDecimal(5999);
+		org2.captial = new BigDecimal(5999);
 		org2.birthday = new Date();
 		
 		org2.parent = parent;
-		parent.children.add(org2);
+		parent.branches.add(org2);
 		
 		Session session = sessionFactory.getCurrentSession();
 		session.save(parent);
