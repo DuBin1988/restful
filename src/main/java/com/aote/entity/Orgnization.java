@@ -57,9 +57,8 @@ public class Orgnization implements Serializable {
     public BigDecimal salary;
     
     @ManyToOne
-    @JoinColumn(name="parent_id", nullable=false)
     public Orgnization parent;
     
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="children")    
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="parent")    
     public List<Orgnization> children;
 }

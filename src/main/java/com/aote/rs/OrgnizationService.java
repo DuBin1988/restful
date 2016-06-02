@@ -36,14 +36,17 @@ public class OrgnizationService {
 		org1.name = "123456";
 		org1.salary = new BigDecimal(5999);
 		org1.birthday = new Date();
+		org1.email ="wrongemail";
+		
 		org1.parent = parent;
-
+		parent.children.add(org1);
+		
 		Orgnization org2 = new Orgnization();
 		org2.name = "123456";
 		org2.salary = new BigDecimal(5999);
 		org2.birthday = new Date();
-		org2.parent = parent;
 		
+		org2.parent = parent;
 		parent.children.add(org2);
 		
 		Session session = sessionFactory.getCurrentSession();
