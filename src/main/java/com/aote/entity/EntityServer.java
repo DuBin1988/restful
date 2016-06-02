@@ -8,24 +8,22 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.aote.util.JsonHelper;
 
 @Component
+@Transactional
 public class EntityServer {
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	// 保存实体
 	public String save(String entityName, String values) {
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
+		Session session = sessionFactory.getCurrentSession();
 		try {
 			JSONObject object = new JSONObject(values);
 			JSONObject result = save(session, entityName, object);
-			session.getTransaction().commit();
-			if (session != null)
-				session.close();
 			return result.toString();
 		} catch (JSONException ex) {
 			throw new RuntimeException(ex.getMessage(), ex);

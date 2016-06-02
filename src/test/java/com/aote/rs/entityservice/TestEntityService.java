@@ -21,10 +21,10 @@ import com.aote.rs.util.Util;
 public class TestEntityService extends TestCase {
 	public void testOne(){
 		try {
-			String path="http://127.0.0.1:8081/rs/entity/"+ URLEncoder.encode("t_project").replace("+", "%20");
+			String path="http://127.0.0.1:8080/rs/entity/"+ URLEncoder.encode("t_project").replace("+", "%20");
 			// ����POSTMethod
 			HttpPost postMethod =new HttpPost(path);/*����HTTP Post����*/
-			StringEntity se = new StringEntity("{name '测试2成'}", "UTF-8");
+			StringEntity se = new StringEntity("{f_name:'测试2成'}", "UTF-8");
 			postMethod.setEntity(se);
 			// ִ��POSTMethod
 			HttpClient httpClient = new DefaultHttpClient();

@@ -15,12 +15,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.aote.entity.EntityServer;
 
 @Path("entity")
 @Singleton
 @Component
+@Transactional
 public class EntityService {
 	static Logger log = Logger.getLogger(EntityService.class);
 
@@ -36,7 +38,11 @@ public class EntityService {
 	public String xtSave(@PathParam("entity") String entityName, String values) {
 		log.debug("entity:" + entityName + ", values:" + values);
 		try {
-			return entityServer.save(entityName, values);
+			String result = entityServer.save(entityName, values);
+			String hql = "delete from table_not_there";
+			log.debug(hql);
+			bulkUpdate(sessionFactory.getCurrentSession(), hql);
+			return result;
 		} catch (RuntimeException ex) {
 			StringWriter sw = new StringWriter();
 			PrintWriter w = new PrintWriter(sw);
