@@ -1,4 +1,4 @@
-package com.aote.rs.util;
+package com.aote.sql;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
