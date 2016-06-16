@@ -2,8 +2,10 @@ package com.aote.entity;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import com.aote.util.JsonHelper;
 @Component
 @Transactional
 public class EntityServer {
+	static Logger log = Logger.getLogger(EntityServer.class);
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -30,13 +34,33 @@ public class EntityServer {
 		}
 	}
 
+	// 删除实体
+	public String delete(String entityName, int id) {
+		String hql = "delete from " + entityName + " where id=" + id;
+		log.debug(hql);
+		bulkUpdate(sessionFactory.getCurrentSession(), hql);
+		return "ok";
+	}
+	
 	// 执行内部保存实体过程
 	private JSONObject save(Session session, String entityName,
 			JSONObject object) {
 		JSONObject result = new JSONObject();
 		// 把json对象转换成map
-		Map<String, Object> map = JsonHelper.toMap(result, entityName, sessionFactory);
+		Map<String, Object> map = JsonHelper.toMap(object, entityName, sessionFactory);
 		session.saveOrUpdate(entityName, map);
 		return result;
+	}
+	
+	/**
+	 * 执行sql
+	 *
+	 * @param session
+	 * @param sql
+	 * @return
+	 */
+	private int bulkUpdate(Session session, String sql) {
+		Query queryObject = session.createQuery(sql);
+		return new Integer(queryObject.executeUpdate()).intValue();
 	}
 }

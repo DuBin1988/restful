@@ -19,15 +19,15 @@ import org.apache.http.util.EntityUtils;
 public class TestEntityDelete extends TestCase {
 	public void testOne(){
 		try {
-			String path="http://127.0.0.1:8080/rs/entity/t_project/21";
-			// 创建POSTMethod  
-			HttpDelete postMethod =new HttpDelete(path);/*建立HTTP Post连线*/
-			// 执行POSTMethod
+			String path="http://127.0.0.1:8081/rs/entity/t_project/2";
+			// POSTMethod  
+			HttpDelete postMethod =new HttpDelete(path);
+			// 璋冪敤POST鏂规硶
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpResponse response = httpClient.execute(postMethod);
 			int code = response.getStatusLine().getStatusCode();
 			assertEquals(200, code);
-			// 如果成功
+			// 杩斿洖鎴愬姛
 			if (code == 200) {
 				String actual = EntityUtils.toString(response.getEntity(), "UTF8");
 			}
