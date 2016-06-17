@@ -1,6 +1,7 @@
 
 package com.aote.rs;
 
+import javax.transaction.Transactional;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -20,6 +21,7 @@ import com.aote.sql.SqlServer;
  */
 @Path("sql")
 @Component
+@Transactional
 public class SqlService {
 	static Logger log = Logger.getLogger(SqlService.class);
 

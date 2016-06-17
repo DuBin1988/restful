@@ -116,6 +116,12 @@ public class JsonHelper {
 	// 把参数格式的JSON转换成map
 	public static Map<String, Object> toMap(JSONObject object) {
 		Map<String, Object> map = new HashMap<String, Object>();
+
+		// null对象转换成空map
+		if (object == null) {
+			return map; 
+		}
+		
 		Iterator<String> iter = object.keys();
 		while (iter.hasNext()) {
 			String key = iter.next();

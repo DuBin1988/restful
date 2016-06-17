@@ -38,7 +38,8 @@ public class SqlServer {
 			JSONObject jo = new JSONObject();
 
 			// 获取原始sql语句
-			String sql = ResourceHelper.getString("/sqls/" + name);
+			String path = SqlMapper.getSql(name);
+			String sql = ResourceHelper.getString("/sqls/" + path);
 			
 			sql = "$" + sql;
 			
@@ -84,7 +85,9 @@ public class SqlServer {
 			}
 
 			// 解析传递过来的对象属性
-			String sql = ResourceHelper.getString("/sqls/" + name);
+			String path = SqlMapper.getSql(name);
+			String sql = ResourceHelper.getString("/sqls/" + path);
+			
 			sql = "$" + sql;
 			// 拿到json对象参数
 			JSONObject param = null;

@@ -29,7 +29,8 @@ dependencies {
 		"commons-dbcp:commons-dbcp:1.2.2",
 		"af:expression:1.1.5",
 		"org.jboss.logging:jboss-logging:jar:3.3.0.Final",
-		"javax.servlet:servlet-api:2.5"
+		"javax.servlet:servlet-api:2.5",
+		"xstream:xstream:1.2.2"
 	)
 	
 	

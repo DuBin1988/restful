@@ -17,7 +17,7 @@ import org.apache.http.util.EntityUtils;
 
 public class TestSqlService extends TestCase {
 	public void testOne(){
-		sql("project.sql");
+		sql("查询缴费汇总");
 	}
 	
 	private void sql(String name) {

@@ -1,0 +1,4 @@
+﻿<cfg>
+	<sql alias='test' path='test.sql'/>
+	<sql alias='查询缴费汇总' path='收费/收费汇总.sql'/>
+</cfg>
