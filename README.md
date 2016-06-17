@@ -10,10 +10,10 @@
 
 - 源程序：`src/main/java/com/aote`
   * rs：所有服务均放在该目录下，服务采取门面模式，实际操作放在专门目录下。
-  * face：业务逻辑中调用的java代码门面，实际操作在专门目录下。
   * [sql](docs/sql.md)：执行sql相关操作。
   * [entity](doc/entity.md)：执行实体相关操作。
   * [logic](doc/logic.md)：业务逻辑相关操作。
+  * [util](doc/util.md)：对已经存在的类进行静态扩展。
 
 - 测试环境
   * 单元测试用例在 `src/test/java/com/aote` 下。

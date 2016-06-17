@@ -28,7 +28,13 @@ import org.hibernate.type.TimeType;
 import org.hibernate.type.Type;
 
 public class JsonHelper {
-	// 把json转换成map
+	/**
+	 * 把JSON对象按照hibernate的配置转换成map
+	 * @param object: JSON对象
+	 * @param entityType: 实体类型
+	 * @param sessionFactory
+	 * @return：map
+	 */
 	public static Map<String, Object> toMap(JSONObject object,
 			String entityType, SessionFactory sessionFactory) {
 		// 获得实体元数据
@@ -107,6 +113,35 @@ public class JsonHelper {
 		return map;
 	}
 
+	// 把参数格式的JSON转换成map
+	public static Map<String, Object> toMap(JSONObject object) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		Iterator<String> iter = object.keys();
+		while (iter.hasNext()) {
+			String key = iter.next();
+			Object value = null;
+			try {
+				value = object.get(key);
+			} catch (JSONException e) {
+				throw new RuntimeException("数据错误，key: " + key, e);
+			}
+
+			if (value instanceof JSONArray) {
+				// 把JSON集合转换成List
+				List<Map<String, Object>> set = saveList((JSONArray) value);
+				map.put(key, set);
+			} else if (value instanceof JSONObject) {
+				JSONObject obj = (JSONObject) value;
+				Map<String, Object> set = toMap((JSONObject) value);
+				map.put(key, set);
+			} else {
+				map.put(key, value);
+			}
+		}
+
+		return map;
+	}
+	
 	// 把Json集合转换成set
 	private static Set<Map<String, Object>> saveSet(JSONArray array,
 			SessionFactory sessionFactory) {
@@ -133,6 +168,21 @@ public class JsonHelper {
 				JSONObject obj = (JSONObject) array.get(i);
 				String type = (String) obj.get("EntityType");
 				Map<String, Object> map = toMap(obj, type, sessionFactory);
+				set.add(map);
+			} catch (JSONException e) {
+				throw new WebApplicationException(e);
+			}
+		}
+		return set;
+	}
+
+	// 把参数方式的Json集合转换成列表
+	private static List<Map<String, Object>> saveList(JSONArray array) {
+		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();
+		for (int i = 0; i < array.length(); i++) {
+			try {
+				JSONObject obj = (JSONObject) array.get(i);
+				Map<String, Object> map = toMap(obj);
 				set.add(map);
 			} catch (JSONException e) {
 				throw new WebApplicationException(e);

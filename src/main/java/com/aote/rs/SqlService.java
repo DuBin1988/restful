@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,14 +21,11 @@ import com.aote.sql.SqlServer;
 @Path("sql")
 @Component
 public class SqlService {
-	@Autowired
-	private SessionFactory sessionFactory;
-	
+	static Logger log = Logger.getLogger(SqlService.class);
+
 	@Autowired
 	private SqlServer sqlServer;
 	
-	static Logger log = Logger.getLogger(SqlService.class);
-
 	/**
 	 * 获取SQL语句的合计执行结果
 	 * @param name: sql语句名

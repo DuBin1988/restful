@@ -1,7 +1,7 @@
-// 把对象数据存储到t_taskdispatch中
-this.save
+// 淇濆瓨浠诲姟鍒嗗彂杩囩▼
+entity.save
 
-// 更新t_task里的内容为分派时的值
+// 鏇存柊浠诲姟鍐呭
 this.sql($
 update t_task set
   actor={actor},

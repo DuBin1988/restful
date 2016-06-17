@@ -1,6 +1,6 @@
 package com.aote.sql;
 
-import java.io.RandomAccessFile;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -12,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.af.expression.Delegate;
-import com.af.expression.Program;
+import com.aote.util.ExpressionHelper;
+import com.aote.util.JsonHelper;
+import com.aote.util.ResourceHelper;
 
 @Component
 @Transactional
@@ -36,7 +37,7 @@ public class SqlServer {
 			JSONObject jo = new JSONObject();
 
 			// 获取原始sql语句
-			String sql = getSql(name);
+			String sql = ResourceHelper.getString("/sqls/" + name);
 			
 			sql = "$" + sql;
 			
@@ -47,7 +48,8 @@ public class SqlServer {
 				param = new JSONObject(str);
 				log.debug(param.get("condition"));
 			}
-			sql = getExecSql(sql, param);
+			Map<String, Object> params = JsonHelper.toMap(param);
+			sql = ExpressionHelper.run(sql, params).toString();
 			
 			// 求和时，order by会导致sql错误，过滤掉order by部分。
 			sql = filterOutOrderBy(sql);
@@ -81,7 +83,7 @@ public class SqlServer {
 			}
 
 			// 解析传递过来的对象属性
-			String sql = getSql(name);
+			String sql = ResourceHelper.getString("/sqls/" + name);
 			sql = "$" + sql;
 			// 拿到json对象参数
 			JSONObject param = null;
@@ -90,7 +92,8 @@ public class SqlServer {
 				param = new JSONObject(str);
 				log.debug(param.toString());
 			}
-			sql = getExecSql(sql, param);
+			Map<String, Object> params = JsonHelper.toMap(param);
+			sql = ExpressionHelper.run(sql, params).toString();
 			Session session = sessionFactory.getCurrentSession();
 			JSONArray array = SqlHelper.query(session, sql, pageNo-1, pageSize);
 			log.debug(array.toString());
@@ -110,32 +113,5 @@ public class SqlServer {
 		if(idx != -1)
 			sql = "select count(*) n, '1' placeholder from ( " + sql.substring(0, idx) + ") ___t___";
 		return sql;
-	}
-
-	// 拿到sql字符串
-	private String getSql(String str) {
-		String sql = null;
-		try {
-			String path = this.getClass().getClassLoader().getResource("/sqls")
-					.getPath();
-			path += str;
-			RandomAccessFile file = new RandomAccessFile(path, "r");
-			byte[] b = new byte[(int) file.length()];
-			file.read(b);
-			file.close();
-			sql = new String(b);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return sql;
-	}
-
-	// 把字符串转换成可执行sql
-	private String getExecSql(String sql, JSONObject params) {
-		Program prog = new Program(sql);
-		// 解析
-		Delegate d = prog.parse();
-		Object result = d.invoke();
-		return result.toString();
 	}
 }
