@@ -15,17 +15,17 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-public class TestSqlService extends TestCase {
+public class TestTaskSql extends TestCase {
 	public void testOne(){
-		sql("查询缴费汇总");
+		sql("任务查询");
 	}
 	
 	private void sql(String name) {
 		try {
-			String path="http://localhost:8081/rs/sql/" + URLEncoder.encode(name).replace("+", "%20") + "/n";
+			String path="http://localhost:8081/restful/rs/sql/" + URLEncoder.encode(name).replace("+", "%20") + "/n";
 			// 创建POSTMethod
 			HttpPost postMethod =new HttpPost(path);/*建立HTTP Post连线*/
-			StringEntity se = new StringEntity("","UTF-8");
+			StringEntity se = new StringEntity("{condition: '1=1'}","UTF-8");
 			postMethod.setEntity(se);
 			// 执行POSTMethod
 			HttpClient httpClient = new DefaultHttpClient();

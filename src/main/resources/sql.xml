@@ -1,0 +1,4 @@
+﻿<cfg>
+	<sql alias='项目查询' path='project.sql'/>
+	<sql alias='任务查询' path='任务/任务查询.sql'/>
+</cfg>

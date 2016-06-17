@@ -36,3 +36,16 @@ log.debug($测试$),
 ```
 a = data.f_name
 ```
+
+## 业务逻辑配置
+
+resources下的logic.xml可以对所有业务逻辑进行统一配置。内容如下：
+```xml
+<cfg>
+	<logic alias='test' path='test.sql'/>
+	<logic alias='查询缴费汇总' path='收费/收费汇总.sql'/>
+</cfg>
+```
+
+- alias: 业务逻辑名称
+- path: 业务逻辑存放路径，所有业务逻辑都存放在logics文件夹下，这里的路径为相对路径，开头不能加'/'

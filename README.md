@@ -15,11 +15,14 @@
   * [logic](doc/logic.md)：业务逻辑相关操作。
   * [util](doc/util.md)：对已经存在的类进行静态扩展。
 
+- 资源内容: src/main/resources
+  * hibernate.cfg.xml：hibernate的主配置文件
+  * hibernate目录：用于测试的数据库表
+  * sql.xml: sql语句的主配置文件
+  *　sqls目录：用于测试的sql查询，可以按目录存放
+  * logic.xml：业务逻辑的主配置文件
+  * logics目录：用于测试的业务逻辑，可以按目录存放
+  
 - 测试环境
   * 单元测试用例在 `src/test/java/com/aote` 下。
   * 单元测试对每个类进行测试，重点测试服务。
-  * 配合单元测试的相关资源在test的resources下，内容有：
-    - hibernate.cfg.xml：hibernate的主配置文件
-    - hibernate目录：用于测试的数据库表
-    - sqls目录：用于测试的sql查询
-    - logics目录：用于测试的业务逻辑

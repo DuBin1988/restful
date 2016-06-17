@@ -28,7 +28,8 @@ public class LogicServer {
 	// 执行业务逻辑处理过程
 	public Object run(String name, String str) {
 		// 获取源程序内容
-		String source = ResourceHelper.getString("/logics/" + name);
+		String path = LogicMapper.getLogic(name);
+		String source = ResourceHelper.getString("/logics/" + path);
 		// 处理回车换行
 		source = source.replace("\r\n", "\n");
 		// 执行源程序

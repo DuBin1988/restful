@@ -38,7 +38,7 @@ public class LogicService {
 		try {
 			Object result = logicServer.run(logicName, values);
 			if (result == null) {
-				return null;
+				return "";
 			}
 			return result.toString();
 		} catch (RuntimeException ex) {

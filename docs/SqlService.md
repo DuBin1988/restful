@@ -6,7 +6,7 @@
 
 POST：/sql/sqlName/n
 
-- sqlName：后台sql语句文件名，需要带.sql后缀
+- sqlName：后台配置的sql语句名
 - n：指明获取汇总信息
 - 内容：sql语句参数
 
@@ -26,8 +26,21 @@ POST：/sql/{name}?pageNo=pageNo&pageSize=pageSiz
 1. 没有提供不带分页的sql语句查询，如果要查询不带分页的内容，不传pageNo及pageSize参即可，这时将默认查询前1000条数据。
 2. 系统一次性最多可以查询1000条数据。
 
+## sql语句配置
+
+resources下的sql.xml可以对所有sql语句进行统一配置。内容如下：
+```xml
+<cfg>
+	<sql alias='test' path='test.sql'/>
+	<sql alias='查询缴费汇总' path='收费/收费汇总.sql'/>
+</cfg>
+```
+
+- alias: sql语句名称
+- path: sql语句存放路径，所有sql语句都存放在sqls文件夹下，这里的路径为相对路径，开头不能加'/'
+
 ## sql语句书写
 
 - 所有sql语句放在resources的sqls目录下，不支持按分目录存放。
 - 只支持单一sql语句。
-- sql语句的`order by` 前面必须有一个空格。
+- sql语句的`order by`前面必须有一个空格。

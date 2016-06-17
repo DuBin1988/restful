@@ -19,7 +19,7 @@ import org.apache.http.util.EntityUtils;
 public class TestEntityDelete extends TestCase {
 	public void testOne(){
 		try {
-			String path="http://127.0.0.1:8081/rs/entity/t_project/2";
+			String path="http://127.0.0.1:8081/restful/rs/entity/t_project/10";
 			// POSTMethod  
 			HttpDelete postMethod =new HttpDelete(path);
 			// 调用POST方法

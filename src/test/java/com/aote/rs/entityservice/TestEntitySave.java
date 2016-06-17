@@ -2,7 +2,6 @@ package com.aote.rs.entityservice;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import junit.framework.TestCase;
@@ -16,12 +15,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import com.aote.rs.util.Util;
-
-public class TestEntityService extends TestCase {
+public class TestEntitySave extends TestCase {
 	public void testOne(){
 		try {
-			String path="http://127.0.0.1:8081/rs/entity/"+ URLEncoder.encode("t_project").replace("+", "%20");
+			String path="http://127.0.0.1:8081/restful/rs/entity/"+ URLEncoder.encode("t_project").replace("+", "%20");
 			// POSTMethod
 			HttpPost postMethod =new HttpPost(path);
 			StringEntity se = new StringEntity("{f_name:'测试2成'}", "UTF-8");
