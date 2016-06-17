@@ -3,6 +3,7 @@ package com.aote.rs;
 import java.io.RandomAccessFile;
 import java.util.Set;
 
+import javax.transaction.Transactional;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,12 +22,14 @@ import org.springframework.stereotype.Component;
 import com.af.expression.Delegate;
 import com.af.expression.Program;
 import com.aote.rs.util.SqlHelper;
+import com.aote.util.SqlMapper;
 
 /**
  * 提供sql查询服务
  */
 @Path("sql")
 @Component
+@Transactional
 public class SqlService {
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -50,7 +53,8 @@ public class SqlService {
 			if(str != null && !str.isEmpty()) {
 				log.debug(str);				
 				param = new JSONObject(str);
-				log.debug(param.get("condition"));
+				if(param.has("condition"))
+					log.debug(param.get("condition"));
 			}
 			sql = getExecSql(sql, param);
 			
@@ -152,9 +156,9 @@ public class SqlService {
 	private String getSql(String str) {
 		String sql = null;
 		try {
-			String path = this.getClass().getClassLoader().getResource("/sqls")
+			String path = this.getClass().getClassLoader().getResource("/")
 					.getPath();
-			path += str;
+			path += SqlMapper.getSql(str).path;
 			RandomAccessFile file = new RandomAccessFile(path, "r");
 			byte[] b = new byte[(int) file.length()];
 			file.read(b);

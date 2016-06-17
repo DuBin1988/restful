@@ -1,0 +1,14 @@
+<cfg>
+  <items>
+    <item>
+      <alias>test</alias>
+      <path>sqls/test.sql</path>
+      <hint>测试sql</hint>
+    </item>
+    <item>
+      <alias>测试</alias>
+      <path>sqls/收费/测试.sql</path>
+      <hint>带目录的测试</hint>
+    </item>
+  </items>
+</cfg>
