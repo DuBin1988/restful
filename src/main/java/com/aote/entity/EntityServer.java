@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aote.util.JsonHelper;
+import com.aote.util.SqlHelper;
 
 @Component
 @Transactional
@@ -48,7 +48,7 @@ public class EntityServer {
 	public String delete(String entityName, int id) {
 		String hql = "delete from " + entityName + " where id=" + id;
 		log.debug(hql);
-		bulkUpdate(sessionFactory.getCurrentSession(), hql);
+		SqlHelper.bulkUpdate(sessionFactory.getCurrentSession(), hql);
 		return "ok";
 	}
 	
@@ -59,15 +59,4 @@ public class EntityServer {
 		return result;
 	}
 	
-	/**
-	 * 执行sql
-	 *
-	 * @param session
-	 * @param sql
-	 * @return
-	 */
-	private int bulkUpdate(Session session, String sql) {
-		Query queryObject = session.createQuery(sql);
-		return new Integer(queryObject.executeUpdate()).intValue();
-	}
 }

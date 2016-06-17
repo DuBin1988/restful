@@ -22,5 +22,17 @@ entity.save($t_project$, {f_name: $test$}),
 - sql：SqlServer的实例对象，可以直接调用SqlServer的方法，例如：
 
 ```
-sql.query($project.sql$, {condition: "f_name='abc'"}),
+sql.query($project.sql$, {condition: $f_name='abc'$}),
+```
+
+- log: 用于调用日志处理过程，例如：
+
+```
+log.debug($测试$),
+```
+
+传递给业务逻辑的JSON对象内容，采用data获得，例如：
+
+```
+a = data.f_name
 ```

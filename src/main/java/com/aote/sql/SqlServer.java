@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.aote.util.ExpressionHelper;
 import com.aote.util.JsonHelper;
 import com.aote.util.ResourceHelper;
+import com.aote.util.SqlHelper;
 
 @Component
 @Transactional
@@ -105,6 +106,12 @@ public class SqlServer {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	// 执行sql语句
+	public void run(String sql) {
+		Session session = sessionFactory.getCurrentSession();
+		SqlHelper.bulkUpdate(session, sql);
 	}
 	
 	// 过滤order by子句

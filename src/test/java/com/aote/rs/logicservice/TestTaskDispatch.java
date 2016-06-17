@@ -15,18 +15,20 @@ import org.apache.http.util.EntityUtils;
 
 import junit.framework.TestCase;
 
-public class TestLogicService extends TestCase {
-	public void testOne(){
-		test("EntitySave.logic");
-		//test("SqlExecute.logic");
+public class TestTaskDispatch extends TestCase {
+	public void testOne() {
+		test(
+			"TaskDispatch.logic", 
+			"{f_taskid: 1, f_actor: '账上', f_way: '做一下', f_musttime: '2016-10-10'}"
+		);
 	}
-
-	private void test(String name) {
+	
+	private void test(String name, String json) {
 		try {
 			String path="http://127.0.0.1:8081/rs/logic/"+ URLEncoder.encode(name).replace("+", "%20");
 			// POSTMethod
 			HttpPost postMethod =new HttpPost(path);
-			StringEntity se = new StringEntity("{f_name:'测试2成'}", "UTF-8");
+			StringEntity se = new StringEntity(json, "UTF-8");
 			postMethod.setEntity(se);
 			// 发送Post请求
 			HttpClient httpClient = new DefaultHttpClient();

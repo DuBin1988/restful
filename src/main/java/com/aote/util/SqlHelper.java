@@ -1,4 +1,4 @@
-package com.aote.sql;
+package com.aote.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +48,18 @@ public class SqlHelper {
 		return array;	
 	}
 	
+	/**
+	 * 执行sql
+	 *
+	 * @param session
+	 * @param sql
+	 * @return
+	 */
+	public static int bulkUpdate(Session session, String sql) {
+		Query queryObject = session.createQuery(sql);
+		return new Integer(queryObject.executeUpdate()).intValue();
+	}
+
 	static class HibernateSQLCall implements HibernateCallback {
 		String sql;
 		int page;

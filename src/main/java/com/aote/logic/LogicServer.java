@@ -1,7 +1,9 @@
 package com.aote.logic;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import com.aote.util.ResourceHelper;
 
 @Component
 public class LogicServer {
+	static Logger log = Logger.getLogger(LogicServer.class);
+
 	@Autowired
 	private EntityServer entityServer;
 	
@@ -30,8 +34,12 @@ public class LogicServer {
 		// 执行源程序
 		try {
 			JSONObject param = new JSONObject(str);
-			Map<String, Object> params = JsonHelper.toMap(param);
-			// 附加entityServer, sqlServer对象到参数中
+			// 把传递过来的参数，放到data里，以便跟entity，sql等对象区别开来
+			HashMap<String, Object> data = (HashMap<String, Object>)JsonHelper.toMap(param);
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("data", data);
+			// 附加entityServer, sqlServer等对象到参数中
+			params.put("log", log);
 			params.put("entity", entityServer);
 			params.put("sql", sqlServer);
 			Object result = ExpressionHelper.run(source, params);
