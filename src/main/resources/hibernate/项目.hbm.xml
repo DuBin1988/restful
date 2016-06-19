@@ -10,6 +10,8 @@
 		</id>
 		<!-- 项目名称 -->
 		<property name="f_name" type="string"/>
+		<!-- 项目人员个数 -->
+		<property name="f_persons" type="int"/>
 		<!--  父id -->
 		<property name="f_parentid" type="int"/>
 		<!-- 对应的子项目 -->

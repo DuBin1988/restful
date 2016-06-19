@@ -37,23 +37,30 @@ public class SqlServer {
 		try {
 			JSONObject jo = new JSONObject();
 
+			// 获取参数，求和字段等内容
+			JSONObject param = null;
+			JSONArray sums = null;
+			if(str != null && !str.isEmpty()) {
+				JSONObject json = new JSONObject(str);
+				if (json.has("data")) {
+					param = json.getJSONObject("data");
+				}
+				if (json.has("sums")) {
+					sums = json.getJSONArray("sums");
+				}
+			}
+			Map<String, Object> params = JsonHelper.toMap(param);
+			
 			// 获取原始sql语句
 			String path = SqlMapper.getSql(name);
 			String sql = ResourceHelper.getString("/sqls/" + path);
 			
-			sql = "$" + sql;
-			
 			// 获取编译后的sql语句
-			JSONObject param = null;
-			if(str != null && !str.isEmpty()) {
-				param = new JSONObject(str);
-				param = param.getJSONObject("data");
-			}
-			Map<String, Object> params = JsonHelper.toMap(param);
+			sql = "$" + sql;
 			sql = ExpressionHelper.run(sql, params).toString();
 			
 			// 求和时，order by会导致sql错误，过滤掉order by部分。
-			sql = filterOutOrderBy(sql);
+			sql = filterOutOrderBy(sql, sums);
 			
 			Session session = sessionFactory.getCurrentSession();
 			JSONArray array = SqlHelper.query(session, sql);
@@ -115,11 +122,19 @@ public class SqlServer {
 		SqlHelper.bulkUpdate(session, sql);
 	}
 	
-	// 过滤order by子句
-	private String filterOutOrderBy(String sql) {
-		int idx = sql.toLowerCase().lastIndexOf(" order ");
+	// 过滤order by子句，产生求和结果
+	private String filterOutOrderBy(String source, JSONArray sums) throws Exception {
+		int idx = source.toLowerCase().lastIndexOf("order by");
+		String sql = "select ";
+		// 如果有求和部分，产生求和部分的语句
+		if (sums != null) {
+			for (int i = 0; i < sums.length(); i++) {
+				String name = (String)sums.get(i);
+				sql += "sum(" + name + ") " + name + ", ";
+			}
+		}
 		if(idx != -1)
-			sql = "select count(*) n, '1' placeholder from ( " + sql.substring(0, idx) + ") ___t___";
+			sql += "count(*) n, '1' placeholder from ( " + source.substring(0, idx) + ") ___t___";
 		return sql;
 	}
 }

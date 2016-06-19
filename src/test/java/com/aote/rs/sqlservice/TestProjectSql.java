@@ -17,15 +17,19 @@ import org.apache.http.util.EntityUtils;
 
 public class TestProjectSql extends TestCase {
 	public void testOne(){
-		sql("项目查询");
+		sql("项目查询", "{data: {condition: '1=1'}}");
+	}
+
+	public void testSums(){
+		sql("项目查询", "{data: {condition: '1=1'}, sums: ['f_persons']}");
 	}
 	
-	private void sql(String name) {
+	private void sql(String name, String values) {
 		try {
 			String path="http://localhost:8081/restful/rs/sql/" + URLEncoder.encode(name).replace("+", "%20") + "/n";
 			// 创建POSTMethod
 			HttpPost postMethod =new HttpPost(path);/*建立HTTP Post连线*/
-			StringEntity se = new StringEntity("{data: {condition: '1=1'}}", "UTF-8");
+			StringEntity se = new StringEntity(values, "UTF-8");
 			postMethod.setEntity(se);
 			// 执行POSTMethod
 			HttpClient httpClient = new DefaultHttpClient();

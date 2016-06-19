@@ -8,10 +8,13 @@ POST：/sql/sqlName/n
 
 - sqlName：后台配置的sql语句名
 - n：指明获取汇总信息
-- 内容：sql语句参数, 参数内容在data里，如下：
+- 内容：sql语句参数, 参数内容在data里，求和字段在sums里，如下：
 
 ```
-{data: {condition: '1=1'}}
+{
+	data: {condition: '1=1'},
+	sums: ['f_age', 'f_name']
+}
 ```
 
 说明：
