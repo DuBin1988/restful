@@ -21,7 +21,7 @@ public class TestEntitySave extends TestCase {
 			String path="http://127.0.0.1:8081/restful/rs/entity/"+ URLEncoder.encode("t_project").replace("+", "%20");
 			// POSTMethod
 			HttpPost postMethod =new HttpPost(path);
-			StringEntity se = new StringEntity("{f_name:'测试2成'}", "UTF-8");
+			StringEntity se = new StringEntity("{data: {f_name:'测2成'}}", "UTF-8");
 			postMethod.setEntity(se);
 			// 发送Post请求
 			HttpClient httpClient = new DefaultHttpClient();

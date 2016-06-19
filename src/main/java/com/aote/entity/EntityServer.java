@@ -1,6 +1,5 @@
 package com.aote.entity;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -28,8 +27,10 @@ public class EntityServer {
 		Session session = sessionFactory.getCurrentSession();
 		try {
 			JSONObject object = new JSONObject(values);
+			// 获取要保存的数据
+			JSONObject data = object.getJSONObject("data");
 			// 把json对象转换成map
-			Map<String, Object> map = JsonHelper.toMap(object, entityName, sessionFactory);
+			Map<String, Object> map = JsonHelper.toMap(data, entityName, sessionFactory);
 			JSONObject result = save(session, entityName, map);
 			return result.toString();
 		} catch (JSONException ex) {
@@ -38,9 +39,10 @@ public class EntityServer {
 	}
 
 	// 保存实体
-	public String save(String entityName, HashMap<String, Object> map) {
+	public String save(String entityName, Map<String, Object> map) {
 		Session session = sessionFactory.getCurrentSession();
-		JSONObject result = save(session, entityName, map);
+		Map<String, Object> data = JsonHelper.toMap(map, entityName, sessionFactory);
+		JSONObject result = save(session, entityName, data);
 		return result.toString();
 	}
 	

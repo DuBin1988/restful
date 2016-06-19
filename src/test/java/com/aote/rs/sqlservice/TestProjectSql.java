@@ -25,7 +25,7 @@ public class TestProjectSql extends TestCase {
 			String path="http://localhost:8081/restful/rs/sql/" + URLEncoder.encode(name).replace("+", "%20") + "/n";
 			// 创建POSTMethod
 			HttpPost postMethod =new HttpPost(path);/*建立HTTP Post连线*/
-			StringEntity se = new StringEntity("{condition: '1=1'}","UTF-8");
+			StringEntity se = new StringEntity("{data: {condition: '1=1'}}", "UTF-8");
 			postMethod.setEntity(se);
 			// 执行POSTMethod
 			HttpClient httpClient = new DefaultHttpClient();

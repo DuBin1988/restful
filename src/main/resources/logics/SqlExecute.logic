@@ -2,7 +2,7 @@
 sql.run($
 
 update t_project set
- f_name='新2' 
+ f_name='新3' 
 where id=11
 
 $)

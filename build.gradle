@@ -27,7 +27,7 @@ dependencies {
 		"log4j:log4j:1.2.12",
 		"org.slf4j:slf4j-simple:1.5.8",
 		"commons-dbcp:commons-dbcp:1.2.2",
-		"af:expression:1.1.5",
+		"af:expression:1.1.8",
 		"org.jboss.logging:jboss-logging:jar:3.3.0.Final",
 		"javax.servlet:servlet-api:2.5",
 		"xstream:xstream:1.2.2"

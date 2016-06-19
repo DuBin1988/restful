@@ -18,14 +18,14 @@ import junit.framework.TestCase;
 public class TestTaskDispatch extends TestCase {
 	public void testOne() {
 		test(
-			"TaskDispatch.logic", 
-			"{f_taskid: 1, f_actor: '账上', f_way: '做一下', f_musttime: '2016-10-10'}"
+			"任务分发", 
+			"{data: {f_taskid: 3, f_actor: '账上', f_way: '做一下', f_musttime: '2016-10-10'}}"
 		);
 	}
 	
 	private void test(String name, String json) {
 		try {
-			String path="http://127.0.0.1:8081/rs/logic/"+ URLEncoder.encode(name).replace("+", "%20");
+			String path="http://127.0.0.1:8081/restful/rs/logic/"+ URLEncoder.encode(name).replace("+", "%20");
 			// POSTMethod
 			HttpPost postMethod =new HttpPost(path);
 			StringEntity se = new StringEntity(json, "UTF-8");

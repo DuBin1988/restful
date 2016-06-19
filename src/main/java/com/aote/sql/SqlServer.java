@@ -46,9 +46,8 @@ public class SqlServer {
 			// 获取编译后的sql语句
 			JSONObject param = null;
 			if(str != null && !str.isEmpty()) {
-				log.debug(str);				
 				param = new JSONObject(str);
-				log.debug(param.get("condition"));
+				param = param.getJSONObject("data");
 			}
 			Map<String, Object> params = JsonHelper.toMap(param);
 			sql = ExpressionHelper.run(sql, params).toString();
@@ -92,9 +91,8 @@ public class SqlServer {
 			// 拿到json对象参数
 			JSONObject param = null;
 			if(str != null && !str.isEmpty()) {
-				log.debug(str);
 				param = new JSONObject(str);
-				log.debug(param.toString());
+				param = param.getJSONObject("data");
 			}
 			Map<String, Object> params = JsonHelper.toMap(param);
 			sql = ExpressionHelper.run(sql, params).toString();

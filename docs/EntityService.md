@@ -7,7 +7,11 @@
 POST: /entity/entityName
 
 - entityName：要保存的实体名
-- 内容：JSON格式的实体内容
+- 内容：JSON格式的实体内容，格式如下：
+```
+{data: {f_name: 'abc'}}
+```
+提交的数据放在data里。
 
 ## 删除单个实体
 

@@ -35,6 +35,7 @@ public class LogicServer {
 		// 执行源程序
 		try {
 			JSONObject param = new JSONObject(str);
+			param = param.getJSONObject("data");
 			// 把传递过来的参数，放到data里，以便跟entity，sql等对象区别开来
 			HashMap<String, Object> data = (HashMap<String, Object>)JsonHelper.toMap(param);
 			Map<String, Object> params = new HashMap<String, Object>();

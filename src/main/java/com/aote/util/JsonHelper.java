@@ -147,7 +147,76 @@ public class JsonHelper {
 
 		return map;
 	}
-	
+
+	// 把Map对象内容按照hibernate配置进行转换，重点是要把日期格式字符串转换成日期
+	public static Map<String, Object> toMap(Map<String, Object> object,
+			String entityType, SessionFactory sessionFactory) {
+		// 获得实体元数据
+		ClassMetadata classData = sessionFactory.getClassMetadata(entityType);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		Iterator<String> iter = object.keySet().iterator();
+		while (iter.hasNext()) {
+			String key = iter.next();
+			Object value = object.get(key);
+
+			// 获取字段类型，如果字段不存在，继续看下一个
+			Type propType = null;
+			try {
+				propType = classData.getPropertyType(key);
+			} catch (HibernateException e) {
+				continue;
+			}
+
+			// id号字段为空，不放到数据里，以便当做插入处理
+			if (value == null) {
+				if (!key.equals("id")) {
+					map.put(key, null);
+				}
+			} else if (value instanceof List
+					&& propType instanceof SetType) {
+				// 把JSON集合转换成集合
+				Set<Map<String, Object>> set = saveSet((List) value, sessionFactory);
+				map.put(key, set);
+			} else if (value instanceof List
+					&& propType instanceof ListType) {
+				// 把JSON集合转换成List
+				List<Map<String, Object>> set = saveList((List) value, sessionFactory);
+				map.put(key, set);
+			} else if (value instanceof Map) {
+				Map<String, Object> obj = (Map<String, Object>) value;
+				String type = (String) obj.get("EntityType");
+				if (type == null) {
+					throw new RuntimeException("缺少EntityType");
+				}
+				Map<String, Object> set = toMap(obj, type, sessionFactory);
+				map.put(key, set);
+			} else if (propType != null
+					&& (propType instanceof DateType || propType instanceof TimeType)) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					Date date = sdf.parse(value.toString());
+					map.put(key, date);
+				} catch (ParseException e) {
+					throw new WebApplicationException(e);
+				}
+			} else if (value instanceof Integer
+					&& propType instanceof DoubleType) {
+				// 整形转double
+				Integer v = (Integer) value;
+				map.put(key, v.doubleValue());
+			} else if (value instanceof Integer && propType instanceof LongType) {
+				// 整形转long
+				Long v = Long.valueOf(value.toString());
+				map.put(key, v.longValue());
+			} else {
+				map.put(key, value);
+			}
+		}
+
+		return map;
+	}
+
 	// 把Json集合转换成set
 	private static Set<Map<String, Object>> saveSet(JSONArray array,
 			SessionFactory sessionFactory) {
@@ -193,6 +262,26 @@ public class JsonHelper {
 			} catch (JSONException e) {
 				throw new WebApplicationException(e);
 			}
+		}
+		return set;
+	}
+
+	// 把列表中的Map转换成Set
+	private static Set<Map<String, Object>> saveSet(List<Map<String, Object>> array, SessionFactory sessionFactory) {
+		Set<Map<String, Object>> set = new HashSet<Map<String, Object>>();
+		for (Map<String, Object> map : set) {
+			String type = (String) map.get("EntityType");
+			set.add(toMap(map, type, sessionFactory));
+		}
+		return set;
+	}
+
+	// 把列表中的Map转换List
+	private static List<Map<String, Object>> saveList(List<Map<String, Object>> array, SessionFactory sessionFactory) {
+		List<Map<String, Object>> set = new ArrayList<Map<String, Object>>();
+		for (Map<String, Object> map : set) {
+			String type = (String) map.get("EntityType");
+			set.add(toMap(map, type, sessionFactory));
 		}
 		return set;
 	}

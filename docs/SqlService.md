@@ -8,7 +8,11 @@ POST：/sql/sqlName/n
 
 - sqlName：后台配置的sql语句名
 - n：指明获取汇总信息
-- 内容：sql语句参数
+- 内容：sql语句参数, 参数内容在data里，如下：
+
+```
+{data: {condition: '1=1'}}
+```
 
 说明：
 1. sql语句其实是一个字符串表达式，系统将自动带上前缀$。在sql语句里可以使用任何表达式语法。
@@ -21,6 +25,11 @@ POST：/sql/{name}?pageNo=pageNo&pageSize=pageSiz
 - name: sql语句名
 - pageNo: 页号，默认为1，如果小于1，按1算。
 - pageSize: 每页行数，小于1或者大于1000，按1000算。
+- 内容：sql语句参数, 参数内容在data里，如下：
+
+```
+{data: {condition: '1=1'}}
+```
 
 说明：
 1. 没有提供不带分页的sql语句查询，如果要查询不带分页的内容，不传pageNo及pageSize参即可，这时将默认查询前1000条数据。
@@ -43,4 +52,3 @@ resources下的sql.xml可以对所有sql语句进行统一配置。内容如下�
 
 - 所有sql语句放在resources的sqls目录下，不支持按分目录存放。
 - 只支持单一sql语句。
-- sql语句的`order by`前面必须有一个空格。
