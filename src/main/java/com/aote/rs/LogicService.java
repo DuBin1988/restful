@@ -1,8 +1,5 @@
 package com.aote.rs;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import javax.inject.Singleton;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aote.logic.LogicServer;
+import com.aote.util.ExceptionHelper;
 
 @Path("logic")
 @Singleton
@@ -24,16 +22,18 @@ public class LogicService {
 
 	@Autowired
 	private LogicServer logicServer;
-	
+
 	/**
 	 * 执行业务逻辑
+	 * 
 	 * @param logicName
 	 * @param values
 	 * @return
 	 */
 	@POST
 	@Path("{logic}")
-	public String xtSave(@PathParam("logic") String logicName, String values) {
+	public String xtSave(@PathParam("logic") String logicName, String values)
+			throws Exception {
 		log.debug("logic:" + logicName + ", values:" + values);
 		try {
 			Object result = logicServer.run(logicName, values);
@@ -41,15 +41,8 @@ public class LogicService {
 				return "";
 			}
 			return result.toString();
-		} catch (RuntimeException ex) {
-			StringWriter sw = new StringWriter();
-			PrintWriter w = new PrintWriter(sw);
-			if (ex.getCause() != null) {
-				ex.getCause().printStackTrace(w);
-			} else {
-				ex.printStackTrace(w);
-			}
-			log.error(sw.toString());
+		} catch (Exception ex) {
+			log.error(ExceptionHelper.stackToString(ex));
 			throw ex;
 		}
 	}

@@ -1,8 +1,5 @@
 package com.aote.rs;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import javax.inject.Singleton;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -15,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aote.entity.EntityServer;
+import com.aote.util.ExceptionHelper;
 
 @Path("entity")
 @Singleton
@@ -25,24 +23,18 @@ public class EntityService {
 
 	@Autowired
 	private EntityServer entityServer;
-	
+
 	@POST
 	@Path("{entity}")
 	// 保存实体
-	public String xtSave(@PathParam("entity") String entityName, String values) {
+	public String xtSave(@PathParam("entity") String entityName, String values)
+			throws Exception {
 		log.debug("entity:" + entityName + ", values:" + values);
 		try {
 			String result = entityServer.save(entityName, values);
 			return result;
-		} catch (RuntimeException ex) {
-			StringWriter sw = new StringWriter();
-			PrintWriter w = new PrintWriter(sw);
-			if (ex.getCause() != null) {
-				ex.getCause().printStackTrace(w);
-			} else {
-				ex.printStackTrace(w);
-			}
-			log.error(sw.toString());
+		} catch (Exception ex) {
+			log.error(ExceptionHelper.stackToString(ex));
 			throw ex;
 		}
 	}
@@ -50,7 +42,13 @@ public class EntityService {
 	@DELETE
 	@Path("{entity}/{id}")
 	// 删除实体
-	public String txDelete(@PathParam("entity") String entityName, @PathParam("id") int id) {
-		return entityServer.delete(entityName, id);
+	public String txDelete(@PathParam("entity") String entityName,
+			@PathParam("id") int id) {
+		try {
+			return entityServer.delete(entityName, id);
+		} catch (Exception ex) {
+			log.error(ExceptionHelper.stackToString(ex));
+			throw ex;
+		}
 	}
 }

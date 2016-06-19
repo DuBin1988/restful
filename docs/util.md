@@ -26,3 +26,9 @@
 对Json处理进行扩展。
 
 - toMap：把json内容转换成map。
+
+## ExceptionHelper
+
+对Exception处理进行扩展
+
+- stackToString：把Exception堆栈信息转换成字符串。

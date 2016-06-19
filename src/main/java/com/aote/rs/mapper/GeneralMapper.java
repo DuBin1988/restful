@@ -5,10 +5,10 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class JSONMapper implements ExceptionMapper<RuntimeException> {
-	public Response toResponse(RuntimeException ex) {
+public class GeneralMapper implements ExceptionMapper<Exception> {
+	public Response toResponse(Exception ex) {
 	    return Response.status(500).
-	      entity(ex.getMessage()).
+	      entity("服务器内部错误").
 	      type("text/plain").
 	      build();
 	}

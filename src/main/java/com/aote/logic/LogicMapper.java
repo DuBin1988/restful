@@ -34,6 +34,7 @@ public class LogicMapper {
 			return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static void loadMap() {
 		map = new HashMap<String, String>();
 

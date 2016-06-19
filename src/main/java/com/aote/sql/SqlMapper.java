@@ -32,6 +32,7 @@ public class SqlMapper {
 			return null;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static void loadMap() {
 		map = new HashMap<String, String>();
 

@@ -10,6 +10,7 @@
 
 - 源程序：`src/main/java/com/aote`
   * rs：所有服务均放在该目录下，服务采取门面模式，实际操作放在专门目录下。
+  * [rs/mapper](docs/mapper.md)：把异常映射成错误内容。
   * [sql](docs/sql.md)：执行sql相关操作。
   * [entity](doc/entity.md)：执行实体相关操作。
   * [logic](doc/logic.md)：业务逻辑相关操作。
