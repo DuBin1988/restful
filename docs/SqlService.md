@@ -13,9 +13,19 @@ POST：/sql/sqlName/n
 ```
 {
 	data: {condition: '1=1'},
-	sums: ['f_age', 'f_name']
+	sums: ['f_persons']
 }
 ```
+
+- 返回：如下JSON对象
+
+```
+{"f_persons":null,"n":2,"placeholder":"1"}
+```
+
+  * n: 总数据个数。
+  * placeholder：固定值1，用于占位，前台可以不管。
+  * 其它：求和结果。
 
 说明：
 1. sql语句其实是一个字符串表达式，系统将自动带上前缀$。在sql语句里可以使用任何表达式语法。
@@ -53,5 +63,21 @@ resources下的sql.xml可以对所有sql语句进行统一配置。内容如下�
 
 ## sql语句书写
 
-- 所有sql语句放在resources的sqls目录下，不支持按分目录存放。
-- 只支持单一sql语句。
+1. 只支持单一sql语句。
+2. sql语句支持模块处理，sql语句可以进行复合，例如：
+
+ 基本sql，名称为'基本sql'，有一个汇总参数
+```
+select {groupName}, count(*) c
+from t_project
+group by {groupName}
+```
+
+ 复合sql
+```
+select * from (
+  { sql.call($基本sql$, {groupName: $f_name$}) }
+) t
+```
+
+调用sql.call函数后，将把汇总部分的sql字符串插入到调用部分，这样就实现了sql语句重用。

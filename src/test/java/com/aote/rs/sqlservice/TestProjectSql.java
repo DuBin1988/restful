@@ -35,11 +35,9 @@ public class TestProjectSql extends TestCase {
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpResponse response = httpClient.execute(postMethod);
 			int code = response.getStatusLine().getStatusCode();
+			String actual = EntityUtils.toString(response.getEntity(), "UTF8");
+			System.out.println(actual);
 			assertEquals(200, code);
-			// 如果成功
-			if (code == 200) {
-				String actual = EntityUtils.toString(response.getEntity(), "UTF8");
-			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} catch (ClientProtocolException e) {
