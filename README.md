@@ -6,6 +6,18 @@
 - [sql查询](docs/SqlService.md)
 - [业务逻辑](docs/LogicService.md)
 
+## Maven仓库
+
+```
+http://125.76.225.203:3002/nexus/content/repositories/thirdparty/
+```
+
+以如下方式引入
+
+```
+"af:restful:1.0.0",
+```
+
 ## 目录结构
 
 - 源程序：`src/main/java/com/aote`
@@ -34,4 +46,3 @@
 ```
 gradle release
 ```
-  
