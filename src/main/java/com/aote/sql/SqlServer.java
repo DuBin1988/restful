@@ -107,7 +107,7 @@ public class SqlServer {
 		// 获取编译后的sql语句
 		sql = "$" + sql;
 		// 把自身注册到执行环境中
-		params.put("this", this);
+		params.put("sql", this);
 		sql = ExpressionHelper.run(sql, params).toString();
 
 		return sql;
