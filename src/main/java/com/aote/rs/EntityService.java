@@ -43,7 +43,7 @@ public class EntityService {
 	@Path("{entity}/{id}")
 	// 删除实体
 	public String txDelete(@PathParam("entity") String entityName,
-			@PathParam("id") int id) {
+			@PathParam("id") int id) throws Exception {
 		try {
 			return entityServer.delete(entityName, id);
 		} catch (Exception ex) {
