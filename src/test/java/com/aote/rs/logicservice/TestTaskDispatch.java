@@ -18,8 +18,8 @@ import junit.framework.TestCase;
 public class TestTaskDispatch extends TestCase {
 	public void testOne() {
 		test(
-			"任务分发", 
-			"{data: {f_taskid: 3, f_actor: '账上', f_way: '做一下', f_musttime: '2016-10-10'}}"
+			"CardCompute", 
+			"{data: {cardNo: '123', factory: 'qinchuan'}}"
 		);
 	}
 	

@@ -1,0 +1,17 @@
+log.debug(data.cardNo),
+log.debug(data.factory),
+
+{
+
+f_totalcost: 100.2, 
+f_stair1price: 100,
+f_stair1amount: 10,
+f_stair1fee: 200.23,
+f_stair2price: 0.00, 
+f_stair2amount: 0, 
+f_stair2fee: 0.01,
+f_stair3price: 0.32, 
+f_stair3amount: 3, 
+f_stair3fee: 3.10
+
+}

@@ -1,0 +1,4 @@
+log.debug(data.cardNo),
+log.debug(data.factory),
+
+{f_username: $test姓名$, f_address: $add地址$, f_limit: 200}

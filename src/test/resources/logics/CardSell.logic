@@ -1,0 +1,16 @@
+log.debug($cardNo:{data.cardNo}$),
+log.debug($factory:{data.factory}$),
+log.debug($dt:{data.dt}$),
+log.debug($tm:{data.tm}$),
+log.debug($ssprice:{data.ssprice}$),
+
+{
+
+id: $232$,
+f_username: $测试张$, 
+f_address: $见过达到$,
+f_ThePreGas: 10,
+f_LastPreGas: 10,
+f_PatchCard: 2
+
+}
