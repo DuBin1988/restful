@@ -5,9 +5,6 @@
 ### Fixed
 - 业务逻辑结果为Map时，返回JSON串。
 
-### Added
-- 添加了对建行rest访问的支持。
-
 ## 1.0.3 - 2016-06-21 @何宁社
 ### Fixed
 - sql调用改成sql.call了
