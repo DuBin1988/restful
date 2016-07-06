@@ -13,6 +13,7 @@ import com.aote.sql.SqlServer;
 import com.aote.util.ExpressionHelper;
 import com.aote.util.JsonHelper;
 import com.aote.util.ResourceHelper;
+import com.aote.util.Util;
 
 @Component
 public class LogicServer {
@@ -32,17 +33,16 @@ public class LogicServer {
 		// 处理回车换行
 		source = source.replace("\r\n", "\n");
 		// 执行源程序
+		Map<String, Object> params = new HashMap<String, Object>();
+		// 把传递过来的参数，放到data里，以便跟entity，sql等对象区别开来
 		JSONObject param = new JSONObject(str);
 		param = param.getJSONObject("data");
-		// 把传递过来的参数，放到data里，以便跟entity，sql等对象区别开来
-		HashMap<String, Object> data = (HashMap<String, Object>) JsonHelper
-				.toMap(param);
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("data", data);
+		params.put("data", param);
 		// 附加entityServer, sqlServer等对象到参数中
 		params.put("log", log);
 		params.put("entity", entityServer);
 		params.put("sql", sqlServer);
+		params.put("util", new Util());
 		Object result = ExpressionHelper.run(source, params);
 		return result;
 	}

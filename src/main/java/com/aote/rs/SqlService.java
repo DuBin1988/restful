@@ -1,6 +1,5 @@
 package com.aote.rs;
 
-import javax.transaction.Transactional;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -11,6 +10,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.aote.sql.SqlServer;
 import com.aote.util.ExceptionHelper;

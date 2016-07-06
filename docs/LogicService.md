@@ -16,11 +16,15 @@ POST: /logic/logicName
 
 业务逻辑书写基于expression，系统提供了几个默认对象，用于支持业务逻辑与数据库交互。
 
+### entity
+
 - entity: EntityServer的实例对象，可以直接调用EntityServer的方法，例如：
 
 ```
 entity.save($t_project$, {f_name: $test$}),
 ```
+
+### sql
 
 - sql：SqlServer的实例对象，可以直接调用SqlServer的方法，例如：
 
@@ -28,17 +32,24 @@ entity.save($t_project$, {f_name: $test$}),
 sql.query($project.sql$, {condition: $f_name='abc'$}),
 ```
 
+### log
 - log: 用于调用日志处理过程，例如：
 
 ```
 log.debug($测试$),
 ```
 
+### data
+
 传递给业务逻辑的JSON对象内容，采用data获得，例如：
 
 ```
 a = data.f_name
 ```
+
+### util
+
+- util.error: 抛异常
 
 ## 业务逻辑配置
 

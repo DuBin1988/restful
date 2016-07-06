@@ -1,9 +1,5 @@
 package com.aote.util;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,10 +7,7 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.collection.internal.PersistentList;
-import org.hibernate.collection.internal.PersistentSet;
 import org.hibernate.exception.SQLGrammarException;
-import org.hibernate.proxy.map.MapProxy;
 import org.hibernate.transform.ResultTransformer;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate3.HibernateCallback;

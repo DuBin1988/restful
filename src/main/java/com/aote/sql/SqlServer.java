@@ -18,7 +18,6 @@ import com.aote.util.ResourceHelper;
 import com.aote.util.SqlHelper;
 
 @Component
-@Transactional
 public class SqlServer {
 	static Logger log = Logger.getLogger(SqlServer.class);
 
@@ -63,6 +62,14 @@ public class SqlServer {
 	/**
 	 * 执行sql分页查询
 	 */
+	public JSONArray query(String name, String str) throws Exception {
+		return query(name, 1, 1000, str);
+	}
+
+	public JSONArray query(String name, Map<String, Object> params) throws Exception {
+		return query(name, 1, 1000, params);
+	}
+
 	public JSONArray query(String name, int pageNo, int pageSize, String str)
 			throws Exception {
 		// pageNo小于0， 纠正成1
@@ -82,7 +89,11 @@ public class SqlServer {
 			param = param.getJSONObject("data");
 		}
 		Map<String, Object> params = JsonHelper.toMap(param);
+		return query(name, pageNo, pageSize, params);
+	}
 
+	public JSONArray query(String name, int pageNo, int pageSize,
+			Map<String, Object> params) throws Exception {
 		// 产生SQL语句编译后的结果
 		String sql = this.call(name, params);
 
