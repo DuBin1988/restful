@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.collection.internal.PersistentList;
 import org.hibernate.collection.internal.PersistentSet;
 import org.hibernate.proxy.map.MapProxy;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class JsonTransfer {
 	private List<Map<String, Object>> transed = new ArrayList<Map<String, Object>>();

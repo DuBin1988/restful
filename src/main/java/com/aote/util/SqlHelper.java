@@ -3,13 +3,13 @@ package com.aote.util;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.exception.SQLGrammarException;
 import org.hibernate.transform.ResultTransformer;
 import org.hibernate.transform.Transformers;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.orm.hibernate3.HibernateCallback;
 
 public class SqlHelper {
