@@ -1,0 +1,3 @@
+﻿<cfg>
+	<plugin alias='util' class='com.aote.util.Util'/>
+</cfg>

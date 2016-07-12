@@ -4,7 +4,7 @@ apply plugin: 'eclipse'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'maven-publish'
 
-version = '1.0.6'
+version = '1.0.7'
 
 repositories {
 	mavenLocal()
@@ -28,7 +28,7 @@ dependencies {
 		"log4j:log4j:1.2.12",
 		"org.slf4j:slf4j-simple:1.5.8",
 		"commons-dbcp:commons-dbcp:1.2.2",
-		"af:expression:1.1.12",
+		"af:expression:1.1.14",
 		"javax.servlet:servlet-api:2.5",
 	)
 

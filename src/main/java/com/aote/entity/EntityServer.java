@@ -1,5 +1,6 @@
 package com.aote.entity;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -51,6 +52,13 @@ public class EntityServer {
 		return "ok";
 	}
 
+	// 加载实体
+	public Map<String, Object> load(String entityName, Object id) {
+		Session session = sessionFactory.getCurrentSession();
+		Object result = session.load(entityName, (Serializable)id);
+		return (Map<String, Object>)result;
+	}
+	
 	// 执行内部保存实体过程
 	private JSONObject save(Session session, String entityName,
 			Map<String, Object> map) {

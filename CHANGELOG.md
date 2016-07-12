@@ -3,6 +3,15 @@
 
 ## [Unreleased]
 
+## 1.0.7 - 2016-07-12 @何宁社
+### Fixed
+- expression版本更新。
+
+### Added
+- entity增加根据id加载对象方法。
+- sql增加基于JSONObject的参数传递方法。
+- 业务逻辑增加业务对象插件。
+
 ## 1.0.6 - 2016-07-06 @何宁社
 ### Fixed
 - 业务逻辑结果为Map时，返回JSON串。

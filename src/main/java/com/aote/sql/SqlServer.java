@@ -65,7 +65,14 @@ public class SqlServer {
 	public JSONArray query(String name, String str) throws Exception {
 		return query(name, 1, 1000, str);
 	}
-
+	
+	// 参数为json对象
+	public JSONArray query(String name, JSONObject params) throws Exception {
+		Map<String, Object> map = JsonHelper.toMap(params);
+		return query(name, 1, 1000, map);
+	}
+	
+	// 参数为map
 	public JSONArray query(String name, Map<String, Object> params) throws Exception {
 		return query(name, 1, 1000, params);
 	}

@@ -42,7 +42,11 @@ public class LogicServer {
 		params.put("log", log);
 		params.put("entity", entityServer);
 		params.put("sql", sqlServer);
-		params.put("util", new Util());
+		// 附加用户注册的对象到业务逻辑中
+		Map<String, Object> plugins = PluginMapper.getPlugins();
+		for(String key : plugins.keySet()) {
+			params.put(key, plugins.get(key));
+		}
 		Object result = ExpressionHelper.run(source, params);
 		return result;
 	}
