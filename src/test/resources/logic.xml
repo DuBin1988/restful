@@ -3,7 +3,16 @@
 	<logic alias='CardSell' path='CardSell.logic'/>
 	<logic alias='CardCompute' path='CardCompute.logic'/>
 	<logic alias='CardSearch' path='CardSearch.logic'/>
+
+	<logic alias='逻辑调用' path='LogicCall.logic'/>
+	<logic alias='参数' path='Data.logic'/>
+	<logic alias='日志' path='Log.logic'/>
+	<logic alias='抛出异常' path='Error.logic'/>
+
+	<logic alias='加载实体' path='EntityLoad.logic'/>
+	<logic alias='删除实体' path='EntityDelete.logic'/>
 	<logic alias='保存实体' path='EntitySave.logic'/>
+	<logic alias='执行查询' path='SqlQuery.logic'/>
 	<logic alias='执行SQL' path='SqlExecute.logic'/>
 	<logic alias='任务分发' path='任务/任务分发.logic'/>
 </cfg>

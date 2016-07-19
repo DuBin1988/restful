@@ -1,0 +1,4 @@
+//加载实体
+a = entity.load($t_task$, 4),
+
+a.f_name

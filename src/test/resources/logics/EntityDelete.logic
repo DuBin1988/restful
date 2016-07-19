@@ -1,0 +1,2 @@
+// 删除实体
+entity.delete($t_task$, 3)

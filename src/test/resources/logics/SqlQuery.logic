@@ -1,0 +1,4 @@
+// 执行sql内容
+a = sql.query($项目汇总$, {groupName: $f_parentid$}),
+
+a[0].c

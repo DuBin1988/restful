@@ -73,7 +73,15 @@ where f_userid = {data.f_userid}
 
 $)
 ```
- 
+
+### logic
+
+用于调用其它业务逻辑，例如:
+
+```
+logic.run($其它业务逻辑$, {param1: $abc$})
+```
+
 ### log
 用于调用日志处理过程，例如：
 

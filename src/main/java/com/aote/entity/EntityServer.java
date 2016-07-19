@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.aote.util.JsonHelper;
+import com.aote.util.JsonTransfer;
 import com.aote.util.SqlHelper;
 
 @Component
@@ -45,6 +46,15 @@ public class EntityServer {
 		return result.toString();
 	}
 
+	// 保存json对象格式的实体
+	public String save(String entityName, JSONObject json) throws Exception {
+		Session session = sessionFactory.getCurrentSession();
+		Map<String, Object> data = JsonHelper.toMap(json, entityName,
+				sessionFactory);
+		JSONObject result = save(session, entityName, data);
+		return result.toString();
+	}
+
 	// 删除实体
 	public String delete(String entityName, int id) {
 		String hql = "delete from " + entityName + " where id=" + id;
@@ -53,12 +63,14 @@ public class EntityServer {
 	}
 
 	// 加载实体
-	public Map<String, Object> load(String entityName, Object id) {
+	public JSONObject load(String entityName, Object id) throws Exception {
 		Session session = sessionFactory.getCurrentSession();
-		Object result = session.load(entityName, (Serializable)id);
-		return (Map<String, Object>)result;
+		Object result = session.load(entityName, (Serializable) id);
+		Map<String, Object> map = (Map<String, Object>)result;
+		JSONObject obj = (JSONObject)new JsonTransfer().MapToJson(map);
+		return obj;
 	}
-	
+
 	// 执行内部保存实体过程
 	private JSONObject save(Session session, String entityName,
 			Map<String, Object> map) {

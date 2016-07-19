@@ -1,0 +1,2 @@
+// 抛出异常
+util.error( {status: 501, msg: $未找到用户$} )

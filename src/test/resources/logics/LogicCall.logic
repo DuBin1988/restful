@@ -1,0 +1,3 @@
+x = logic.run($参数$, {f_name: $abc$}),
+
+x
